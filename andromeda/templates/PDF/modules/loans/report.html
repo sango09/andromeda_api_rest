@@ -1,0 +1,62 @@
+{% extends 'PDF/base.html' %}
+{% block title %}
+  <h1>REPORTE DE PRESTAMOS TECNOLOGICOS</h1>
+{% endblock title %}
+
+{% block first_card %}
+  <h5 class="text-muted">PRESTAMOS EN TOTAL</h5>
+  <h3>{{ total_loans }}</h3>
+{% endblock first_card %}
+
+{% block second_card %}
+  <h5 class="text-muted">IMPLEMENTOS SOLICITADOS</h5>
+  <h3>{{ implements_total }}</h3>
+{% endblock second_card %}
+
+{% block third_card %}
+  <h5 class="text-muted">AUXILIAR CON MAYOR ASIGNACIÓN</h5>
+  <h3>{{ best }}</h3>
+{% endblock third_card %}
+
+{% block thead %}
+  <th class="px-0 border-top-0" scope="col">Ticket</th>
+  <th class="px-0 border-top-0" scope="col">Implemento</th>
+  <th class="px-0 border-top-0" scope="col">Fecha Solicitud</th>
+  <th class="px-0 border-top-0" scope="col">Lugar</th>
+  <th class="px-0 border-top-0" scope="col">Cantidad</th>
+  <th class="px-0 border-top-0 text-center" scope="col">Estado</th>
+  <th class="px-0 border-top-0" scope="col">Auxiliar Asignado</th>
+{% endblock thead %}
+
+{% block tbody %}
+  {% for loan in object_list %}
+    <tr class="text-center">
+      <td>#{{ loan.pk }} por <strong>{{ loan.request_by.get_full_name }}</strong>
+        <br>
+        <a href="mailto:{{ loan.request_by.email }}">{{ loan.request_by.email }}</a>
+      </td>
+      <td>{{ loan.implement }}</td>
+      <td>
+        <time>{{ loan.loans_date }}</time>
+      </td>
+      <td>{{ loan.loans_location }}</td>
+      <td>{{ loan.ammount_implements }}</td>
+      <td>
+        {% if loan.status_loans == 'En proceso' %}
+          <span class="badge badge-warning">{{ loan.status_loans }}</span>
+        {% elif loan.status_loans == 'Cancelado' %}
+          <span class="badge badge-danger">{{ loan.status_loans }}</span>
+        {% else %}
+          <span class="badge badge-success">{{ loan.status_loans }}</span>
+        {% endif %}
+      </td>
+      <td>{{ loan.assigned_auxiliary }}</td>
+    </tr>
+  {% endfor %}
+{% endblock tbody %}
+
+{% block graph %}
+  <div class="graph-module">
+    <img src="/most_requested_implements/" alt="grafico1"/>
+  </div>
+{% endblock graph %}

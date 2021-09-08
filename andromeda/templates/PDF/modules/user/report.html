@@ -1,0 +1,51 @@
+{% extends 'PDF/base.html' %}
+{% block title %}
+  <h1>REPORTE DE USUARIOS</h1>
+{% endblock title %}
+
+{% block thead %}
+  <th class="px-0 border-top-0" scope="col">Nombre</th>
+  <th class="px-0 border-top-0" scope="col">Email</th>
+  <th class="px-0 border-top-0" scope="col">Rol</th>
+  <th class="px-0 border-top-0" scope="col">Estado</th>
+  <th class="px-0 border-top-0" scope="col">Verificado</th>
+{% endblock thead %}
+
+{% block tbody %}
+  {% for user in object_list %}
+    <tr class="text-center">
+      <th>{{ user.get_full_name }}</th>
+      <td>{{ user.email }}</td>
+      <td>
+        {% if user.is_admin %}
+          <span class="badge badge-primary">Coordinador</span>
+        {% elif user.is_employee %}
+          <span class="badge badge-secondary">Empleado</span>
+        {% else %}
+          <span class="badge badge-info">Auxiliar de sistemas</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_active %}
+          <span class="badge badge-success">Activo</span>
+        {% else %}
+          <span class="badge badge-danger">Inactivo</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if user.is_verified %}
+          <span class="badge badge-success">Verificado</span>
+        {% else %}
+          <span class="badge badge-danger">Sin verificar</span>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+{% endblock tbody %}
+
+{% block graph %}
+  <div class="graph-module">
+    <h1>Usuarios registrados cada mes</h1>
+    <img src="/grafico/" alt="grafico1"/>
+  </div>
+{% endblock graph %}

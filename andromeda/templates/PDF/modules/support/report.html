@@ -1,0 +1,54 @@
+{% extends 'PDF/base.html' %}
+{% block title %}
+  <h1>REPORTE DE SOPORTE TECNICO</h1>
+{% endblock title %}
+
+{% block first_card %}
+  <h5 class="text-muted">SOPORTES COMPLETADOS</h5>
+  <h3>{{ supports_completed }}</h3>
+{% endblock first_card %}
+
+{% block second_card %}
+  <h5 class="text-muted">SOPORTES SOLICITADOS</h5>
+  <h3>{{ supports_total }}</h3>
+{% endblock second_card %}
+
+{% block third_card %}
+  <h5 class="text-muted">AUXILIAR CON MAYOR ASIGNACIÓN</h5>
+  <h3>{{ best_auxiliary_support }}</h3>
+{% endblock third_card %}
+
+{% block thead %}
+  <th class="px-0 border-top-0" scope="col">Ticket</th>
+  <th class="px-0 border-top-0" scope="col">Fecha de soporte</th>
+  <th class="px-0 border-top-0" scope="col">Lugar</th>
+  <th class="px-0 border-top-0" scope="col">Descripción del problema</th>
+  <th class="px-0 border-top-0" scope="col">Estado</th>
+  <th class="px-0 border-top-0 text-center" scope="col">Auxiliar asignado</th>
+{% endblock thead %}
+
+{% block tbody %}
+  {% for support in object_list %}
+    <tr class="text-center">
+      <td>#{{ support.pk }} por <strong>{{ support.request_by.get_full_name }}</strong>
+        <br>
+        <a href="mailto:{{ support.request_by.email }}">{{ support.request_by.email }}</a>
+      </td>
+      <td>
+        <time>{{ support.support_date }}</time>
+      </td>
+      <td>{{ support.support_location }}</td>
+      <td>{{ support.description_problem }}</td>
+      <td>
+        {% if support.status_support == 'En proceso' %}
+          <span class="badge badge-warning">{{ support.status_support }}</span>
+        {% elif support.status_support == 'Cancelado' %}
+          <span class="badge badge-danger">{{ support.status_support }}</span>
+        {% else %}
+          <span class="badge badge-success">{{ support.status_support }}</span>
+        {% endif %}
+      </td>
+      <td>{{ support.assigned_auxiliary }}</td>
+    </tr>
+  {% endfor %}
+{% endblock tbody %}

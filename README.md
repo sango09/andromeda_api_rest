@@ -1,1 +1,1 @@
-andromeda_api_rest
+andromeda

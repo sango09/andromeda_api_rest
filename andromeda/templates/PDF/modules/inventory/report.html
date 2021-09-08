@@ -1,0 +1,65 @@
+{% extends 'PDF/base.html' %}
+
+{% block title %}
+  <h1>REPORTE DE INVENTARIO</h1>
+{% endblock title %}
+
+{% block first_card %}
+  <h5 class="text-muted">IMPLEMENTOS EN TOTAL</h5>
+  <h3>{{ implements_total }}</h3>
+{% endblock first_card %}
+
+{% block second_card %}
+  <h5 class="text-muted">FICHAS TECNICAS GENERADAS</h5>
+  <h3>{{ tech_tabs_total }}</h3>
+{% endblock second_card %}
+
+{% block third_card %}
+  <h5 class="text-muted">IMPLEMENTOS INHABILITADOS</h5>
+  <h3>{{ disabled_implements }}</h3>
+{% endblock third_card %}
+
+{% block thead %}
+  <th class="px-0 border-top-0" scope="col">Nombre y modelo del implemento</th>
+  <th class="px-0 border-top-0" scope="col">Categoria</th>
+  <th class="px-0 border-top-0" scope="col">Precio de compra</th>
+  <th class="px-0 border-top-0" scope="col">Fecha de adquisición</th>
+  <th class="px-0 border-top-0" scope="col">Usuario asignado</th>
+  <th class="px-0 border-top-0 text-center" scope="col">Estado del implemento</th>
+{% endblock thead %}
+{% block tbody %}
+  {% for implement in object_list %}
+    <tr class="text-center">
+      <td>{{ implement.technical_data_sheet }}</td>
+      <td>{{ implement.category }}</td>
+      <td>${{ implement.price }}</td>
+      <td>
+        <time>{{ implement.purchase_date }}</time>
+      </td>
+      <td>
+        {% if implement.assigned_user %}
+          {{ implement.assigned_user }}
+        {% else %}
+          Sin usuario asignado
+        {% endif %}
+      </td>
+      <td class="text-center">
+        {% if implement.status_implement == 'Inactivo' %}
+          <span class="badge badge-danger">{{ implement.status_implement }}</span>
+        {% elif implement.status_implement == 'Disponible' %}
+          <span class="badge badge-success">{{ implement.status_implement }}</span>
+        {% elif implement.status_implement == 'En prestamos' %}
+          <span class="badge badge-primary">{{ implement.status_implement }}</span>
+        {% elif implement.status_implement == 'En mantenimiento' %}
+          <span class="badge badge-warning">{{ implement.status_implement }}</span>
+        {% elif implement.status_implement == 'Pendiente de mantenimiento' %}
+          <span class="badge badge-secondary">{{ implement.status_implement }}</span>
+        {% else %}
+          <span class="badge badge-light">{{ implement.status_implement }}</span>
+        {% endif %}
+      </td>
+    </tr>
+  {% empty %}
+    <h1>Sin implementos registrados</h1>
+  {% endfor %}
+{% endblock tbody %}

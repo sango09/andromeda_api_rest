@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Andromeda</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+</head>
+<body>
+<div class="text-right">
+  <time>{{ now }}</time>
+</div>
+<div class="text-center mb-5">
+  <img src="{% static 'img/logo_azul.png' %}" alt="Andromeda"
+       style="max-width: 10rem">
+  {% block title %}
+  {% endblock title %}
+</div>
+{% if object_list|length == 0 %}
+  <h1 class="text-center">AUN NO SE HAN INGRESADO DATOS</h1>
+{% else %}
+  {% if module is not True %}
+    <div class="flex-content">
+      <div class="card" style="height: 6rem;">
+        <div class="card-body">
+          {% block first_card %}
+          {% endblock first_card %}
+        </div>
+      </div>
+      <div class="card mr-2" style="height: 6rem;">
+        <div class="card-body">
+          {% block second_card %}
+          {% endblock second_card %}
+
+        </div>
+      </div>
+      <div class="card" style="height: 6rem;">
+        <div class="card-body">
+          {% block third_card %}
+          {% endblock third_card %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="table-content">
+    <table class="table my-4 table-bordered">
+      <thead>
+      <tr class="text-muted text-center">
+        {% block thead %}
+        {% endblock thead %}
+      </tr>
+      </thead>
+      <tbody>
+      {% block tbody %}
+      {% endblock tbody %}
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center">
+    {% block graph %}
+    {% endblock graph %}
+  </div>
+{% endif %}
+</body>
+</html>

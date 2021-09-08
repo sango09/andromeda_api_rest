@@ -1,0 +1,62 @@
+{% extends 'PDF/base.html' %}
+{% block title %}
+  <h1>REPORTE DE MANTENIMIENTOS</h1>
+{% endblock title %}
+
+{% block first_card %}
+  <h5 class="text-muted">MANTENIMIENTOS COMPLETADOS</h5>
+  <h3>{{ maintenance_total }}</h3>
+{% endblock first_card %}
+
+{% block second_card %}
+  <h5 class="text-muted">IMPLEMENTOS CON MANTENIMIENTO</h5>
+  <h3>{{ implements_maintenance_total }}</h3>
+{% endblock second_card %}
+
+{% block third_card %}
+  <h5 class="text-muted">AUXILIAR CON MAYOR ASIGNACIÓN</h5>
+  <h3>{{ best_auxiliary_maintenance }}</h3>
+{% endblock third_card %}
+
+{% block thead %}
+  <th class="px-0 border-top-0" scope="col">Ticket</th>
+  <th class="px-0 border-top-0" scope="col">Implemento</th>
+  <th class="px-0 border-top-0" scope="col">Fecha de solicitud</th>
+  <th class="px-0 border-top-0" scope="col">Lugar del mantenimiento</th>
+  <th class="px-0 border-top-0" scope="col">Tipo de mantenimiento</th>
+  <th class="px-0 border-top-0" scope="col">Estado</th>
+  <th class="px-0 border-top-0 text-center" scope="col">Auxiliar asignado</th>
+{% endblock thead %}
+
+{% block tbody %}
+  {% for maintenance in object_list %}
+    <tr class="text-center">
+      <td>#{{ maintenance.pk }} por <strong>{{ maintenance.request_by.get_full_name }}</strong>
+      <td>{{ maintenance.implement.name }}
+        <br>
+        <strong>{{ maintenance.implement.serial_number }}</strong>
+      </td>
+      <td>
+        <time>{{ maintenance.maintenance_date }}</time>
+      </td>
+      <td>{{ maintenance.maintenance_location }}</td>
+      <td>
+        {% if maintenance.maintenance_type == 'Correctivo' %}
+          <span class="badge badge-warning">{{ maintenance.maintenance_type }}</span>
+        {% else %}
+          <span class="badge badge-primary">{{ maintenance.maintenance_type }}</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if maintenance.is_active %}
+          <span class="badge badge-warning">En proceso</span>
+        {% elif maintenance.is_active is False and maintenance.complete_maintenance_date == null %}
+          <span class="badge badge-danger">Cancelado</span>
+        {% else %}
+          <span class="badge badge-success">Completado</span>
+        {% endif %}
+      </td>
+      <td>{{ maintenance.assigned_auxiliary }}</td>
+    </tr>
+  {% endfor %}
+{% endblock tbody %}
